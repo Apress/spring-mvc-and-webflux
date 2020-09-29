@@ -1,0 +1,14 @@
+dependencyManagement {
+	imports {
+		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework:spring-tx'
+	implementation 'org.springframework:spring-context-support'
+	implementation 'com.github.h-thurow:simple-jndi:0.21.0'
+
+	testImplementation 'org.springframework:spring-webmvc'
+}
