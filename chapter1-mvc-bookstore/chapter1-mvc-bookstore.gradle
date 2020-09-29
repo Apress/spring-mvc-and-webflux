@@ -1,0 +1,21 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+	id 'war'
+}
+
+description 'Application showing how a plain Spring WAR with only java configuration would be configured and build.'
+
+// we are using Spring Boot dependency management, but we configure Spring MVC in the classic manner - explicitly, with no Spring Boot "magic"
+dependencyManagement {
+	imports {
+		mavenBom SpringBootPlugin.BOM_COORDINATES
+	}
+}
+
+dependencies {
+	implementation 'ch.qos.logback:logback-classic'
+	implementation 'javax.servlet:javax.servlet-api'
+	implementation 'org.springframework:spring-webmvc'
+	implementation 'javax.servlet:jstl'
+}

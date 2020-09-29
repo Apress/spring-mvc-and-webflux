@@ -1,0 +1,83 @@
+buildscript {
+	repositories {
+		maven { url 'https://plugins.gradle.org/m2/' }
+		maven { url "https://repo.spring.io/snapshot/" }
+		maven { url 'https://repo.spring.io/milestone' }
+	}
+    dependencies {
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.3.4.RELEASE'
+			  classpath 'com.github.ben-manes:gradle-versions-plugin:0.28.0'
+    }
+}
+ext {
+    webProjects = subprojects.findAll { ( it.name.endsWith('service') || it.name.endsWith('bookstore') && !(it.name.contains('mvc') ))}
+		set('springCloudVersion', "Hoxton.SR8")
+}
+
+configure(allprojects) { project ->
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+	  apply plugin: 'com.github.ben-manes.versions'
+
+    repositories {
+        mavenCentral()
+				maven { url "https://repo.spring.io/snapshot/" }
+			  maven { url 'https://repo.spring.io/milestone' }
+    }
+
+    def commonCompilerArgs =
+            ["-Xlint:serial", "-Xlint:cast", "-Xlint:classfile", "-Xlint:dep-ann",
+             "-Xlint:divzero", "-Xlint:empty", "-Xlint:finally", "-Xlint:overrides",
+             "-Xlint:path", "-Xlint:processing", "-Xlint:static", "-Xlint:try", "-Xlint:-options"]
+
+    compileJava.options*.compilerArgs = commonCompilerArgs +
+            ["-Xlint:varargs", "-Xlint:fallthrough", "-Xlint:rawtypes",
+             "-Xlint:deprecation", "-Xlint:unchecked", "-Werror"]
+
+    compileTestJava.options*.compilerArgs = commonCompilerArgs +
+            ["-Xlint:-varargs", "-Xlint:-fallthrough", "-Xlint:-rawtypes",
+             "-Xlint:-deprecation", "-Xlint:-unchecked"]
+
+    compileJava {
+        sourceCompatibility = JavaVersion.VERSION_14
+        targetCompatibility = JavaVersion.VERSION_14
+        options.encoding = "UTF-8"
+    }
+
+    compileTestJava {
+        sourceCompatibility = JavaVersion.VERSION_14
+        targetCompatibility = JavaVersion.VERSION_14
+        options.encoding = "UTF-8"
+        options.compilerArgs += "-parameters"
+    }
+
+		dependencyManagement {
+			imports {
+				mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+			}
+		}
+
+    dependencies {
+
+			implementation 'org.apache.commons:commons-lang3:3.10'
+			testImplementation 'org.springframework.boot:spring-boot-starter-test:2.3.4.RELEASE'
+
+			// JSR-305 only used for non-required meta-annotations
+			compileOnly('com.google.code.findbugs:jsr305:3.0.2')
+			testImplementation('com.google.code.findbugs:jsr305:3.0.2') {
+				exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+			}
+
+		}
+
+	test {
+		useJUnitPlatform()
+	}
+
+
+}
+
+configure(webProjects) { project ->
+    apply plugin: 'org.springframework.boot'
+}

@@ -29,10 +29,30 @@ gradle clean build --scan
 ----
 Just keep in mind, the project is quite big and when displaying the results, you browser might be slow.
 
+=== Trouble shooting
+
+When running `gradle clean build` if you see the following error:
+
+----
+gradle clean build
+> Task :bookstore-mvc-shared:compileJava FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':bookstore-mvc-shared:compileJava'.
+> Could not create service of type DefaultGeneralCompileCaches using GradleScopeCompileServices.createGeneralCompileCaches().
+   > Cannot lock Java compile cache (/[workspace]/spring-mvc-and-webflux/.gradle/6.7-20200804220106+0000/javaCompile) as it has already been locked by this process.
+----
+Get rid of it by executing:
+----
+find ~/.gradle -type f -name "*.lock" -delete
+----
+
 == Releases
 
 Release v1.0 corresponds to the code in the published book, without corrections or updates.
 
 == Contributions
 
-See the file Contributing.adoc for more information on how you can contribute to this repository.
+See the file `Contributing.adoc` for more information on how you can contribute to this repository.

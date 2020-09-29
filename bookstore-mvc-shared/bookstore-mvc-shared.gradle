@@ -1,0 +1,17 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+dependencyManagement {
+	imports {
+		mavenBom SpringBootPlugin.BOM_COORDINATES
+	}
+}
+
+dependencies {
+	implementation 'org.springframework:spring-webmvc'
+	compile 'org.springframework.data:spring-data-jpa'
+	compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final'
+	compile 'javax.validation:validation-api:2.0.1.Final'
+	compile 'org.hibernate:hibernate-core:5.4.17.Final'
+	compile 'javax.annotation:jsr250-api:1.0'
+	compile 'com.zaxxer:HikariCP:3.4.5'
+}

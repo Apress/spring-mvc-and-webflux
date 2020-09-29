@@ -1,0 +1,11 @@
+plugins {
+	id 'war'
+}
+description 'Application showing how a simple Spring Boot Web Application would be configured and build.'
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'javax.servlet:jstl:1.2'
+	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+	providedRuntime 'org.apache.tomcat.embed:tomcat-embed-jasper'
+}

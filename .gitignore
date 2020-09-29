@@ -36,13 +36,13 @@ hs_err_pid*
 .classpath
 .factorypath
 .gradle
-.idea/
+.idea
 .metadata
 .project
 .recommenders
 .settings
 .springBeans
-build/
+build
 MANIFEST.MF
 _site/
 activemq-data
@@ -63,4 +63,3 @@ secrets.yml
 .gradletasknamecache
 .sts4-cache
 gradle.xml
-/code/chapter-12-tools/
