@@ -1,0 +1,20 @@
+apply plugin: 'java'
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.thymeleaf:thymeleaf-spring5'
+	//implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'javax.validation:validation-api:2.0.1.Final'
+	implementation 'org.hibernate:hibernate-validator:6.1.2.Final'
+	implementation 'org.glassfish:jakarta.el:3.0.3'
+
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	//testImplementation 'org.springframework.security:spring-security-test'
+
+}

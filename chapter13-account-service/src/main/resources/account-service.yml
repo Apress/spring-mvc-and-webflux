@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: account-service # Service registers under this name
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      name: bookstore
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+# HTTP Server
+server:
+  port: 6002   # HTTP (Netty) port
+  address: 0.0.0.0
+
+# Discovery Server Access
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://localhost:3000/eureka/
+
+
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    preferIpAddress: false
+
+info:
+  app:
+    name: account-service
+    description: Spring Cloud Account Service
+    version: 2.0.0-SNAPSHOT
+
+# actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    org.springframework: DEBUG
+    com.apress.prospringmvc.account: DEBUG

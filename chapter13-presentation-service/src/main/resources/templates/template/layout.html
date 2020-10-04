@@ -1,0 +1,100 @@
+<!--
+Created by IntelliJ IDEA.
+User: iuliana cosmina
+Date: 2020-05-24
+Time: 11:43
+-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
+<head th:fragment="head(title)">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title th:text="${title}"> Layout Page </title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/style.css}" >
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <div id="wrap">
+        <div class="header" id="header" th:fragment="header">
+            <div class="logo"><a th:href="@{/index.htm}">
+                <img th:src="@{/static/images/logo.gif}" alt="" title="" border="0" /></a></div>
+            <div class="nav">
+                <ul style="float: left;">
+                    <li class="selected"><a th:href="@{/index.htm}" th:text="#{nav.home}">HOME</a></li>
+                    <li><a th:href="@{/book/search}" th:text="#{nav.books}">BOOKS</a></li>
+                    <li th:if="${session.account ne null}"><a th:href="@{/customer/account}" th:text="#{nav.account}">ACCOUNT</a></li>
+                    <li><a th:href="@{/cart/checkout}" th:text="#{nav.checkout}">CHECKOUT</a></li>
+                    <li th:if="${session.account eq null}"><a th:href="@{/customer/register}" th:text="#{nav.register}">REGISTER</a></li>
+                    <li th:if="${session.account eq null}"><a th:href="@{/login}" th:text="#{nav.login}">LOGIN</a></li>
+                    <li th:if="${session.account ne null}"><a th:href="@{/logout}" th:text="#{nav.logout}">LOGOUT</a></li>
+
+                </ul>
+                <ul style="float: right;">
+                    <li><em th:if="${session.account ne null}" th:text="'(' + ${session.account.firstName} + ')'"></em></li>
+                    <li><a th:href="@{?lang=en}" class="selected"><img th:src="@{/static/images/gb.gif}" alt="" title="" border="0" /></a></li>
+                    <li><a th:href="@{?lang=nl}"><img th:src="@{/static/images/nl.gif}" alt="" title="" border="0" /></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="center_content">
+            <div class="left_content" id="left_content" th:fragment="left_content">
+                <h1 id="pagetitle" th:text="#{index.caption}">PAGE TITLE</h1>
+            </div><!--end of left content-->
+
+            <div class="right_content" id="right_content" th:fragment="right_content">
+                <div class="right_box">
+                    <div class="title">
+                        <span class="title_icon"><img th:src="@{/static/images/bullet4.gif}" alt="" title="" /></span>
+                        <th:block th:text="#{main.title.randombooks}">Book Name</th:block>
+                    </div>
+                    <div id="randomBooks">
+                    </div>
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                        $(document).ready(function() {
+                            var formUrl = /*[[@{/book/random/}]]*/ '/book/random';
+                            $.ajax({
+                                url: formUrl,
+                                type: 'GET',
+                                success: function(responseData) { renderBooks(responseData);}
+                            });
+                            function renderBooks(books) {
+                                var content = '';
+                                var baseDetailUrl = /*[[@{/book/detail/}]]*/ '/book/detail';
+                                var bookImgUrl = /*[[@{/static/images/books/}]]*/ '/static/images/books';
+                                for (var i = 0; i<books.length; i++) {
+                                    console.log("books [i] : " + books[i]);
+                                    content += '<div class="new_prod_box">';
+                                    content += ' <a href="'+baseDetailUrl + books[i].id+'">'+books[i].title+'</a>';
+                                    content += ' <div class="new_prod_img">';
+                                    content += '  <a href="' + baseDetailUrl + books[i].id+'">';
+                                    content += '     <img src="' + bookImgUrl + books[i].isbn + '/book_front_cover.png" class="thumb" border="0" width="100px" title="' + books[i].title +'" />';
+                                    content += '  </a>';
+                                    content += ' </div>'
+                                    content += '</div>'
+                                }
+                                $('#randomBooks').html(content);
+                            }
+                        });
+                        /*]]>*/
+                    </script>
+                </div>
+
+
+            </div><!--end of right content-->
+            <div class="clear"></div>
+        </div><!--end of center content-->
+
+        <div class="footer" id="footer" th:fragment="footer">
+            <div class="left_footer">
+                <img th:src="@{/static/images/footer_logo.gif}" alt="Footer Logo" title="" /><br />
+                <a href="http://csscreme.com/freecsstemplates/" title="free templates">
+                    <img th:src="@{/static/images/csscreme.gif}" alt="free templates" title="free templates" border="0" />
+                </a>
+                <p th:text="#{footer.text}"></p>
+            </div>
+            <div class="right_footer"></div>
+        </div><!--end of footer content-->
+
+    </div>
+</body>
+</html>

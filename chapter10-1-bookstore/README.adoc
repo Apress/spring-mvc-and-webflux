@@ -1,0 +1,108 @@
+== Reactive Web Application on Netty using Spring Boot
+
+Internationalization for this project is supported using request parameters and a custom implementation `WebFilter`
+
+=== Prerequisites
+This project requires a local installation of MongoDB.
+
+Download community edition for your system from here: https://docs.mongodb.com/manual/tutorial/ .
+
+=== Command samples
+
+Example for MacOS:
+
+[source]
+----
+brew tap mongodb/brew
+brew install mongodb-community@4.2
+----
+
+If you get this error:
+
+[source]
+----
+xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools),
+missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun
+----
+
+Run:
+
+[source]
+----
+xcode-select --install
+#or
+xcode-select --reset
+----
+then try again.
+In addition to the binaries, the install creates:
+
+* the configuration file (/usr/local/etc/mongod.conf)
+* the log directory path (/usr/local/var/log/mongodb)
+* the data directory path (/usr/local/var/mongodb)
+
+Start MongoDB as a background process:
+
+[source]
+----
+mongod --config /usr/local/etc/mongod.conf --fork
+----
+
+To shutdown the MongoDB background process:
+
+[source]
+----
+mongo
+> use admin
+> db.shutdownServer()
+----
+
+Verify that there is no `mongod` process:
+
+[source]
+----
+ps aux | grep -v grep | grep mongod
+----
+
+List existing databases:
+
+[source]
+----
+mongo
+> show databases
+----
+
+To create a database named `bookstore` start the mongo console and run:
+
+[source]
+----
+mongo
+> use bookstore
+----
+
+List existing collections in database `bookstore`:
+
+[source]
+----
+mongo
+> use bookstore
+> show collections
+----
+
+List contents of an existing collection:
+
+[source]
+----
+mongo
+> use bookstore
+> db.book.find()
+----
+
+Delete an existing collection:
+
+[source]
+----
+mongo
+> use bookstore
+> db.book.drop()
+----
+

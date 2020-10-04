@@ -1,0 +1,95 @@
+<!--
+Created by IntelliJ IDEA.
+User: iuliana cosmina
+Date: 2020-05-24
+Time: 11:47
+-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{template/layout :: head('Chat')}"></head>
+
+<body>
+<div id="wrap">
+    <div id="header" th:replace="~{template/layout :: header}" ></div>
+    <div class="center_content">
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var ping;
+            var websocket;
+
+            jQuery(function ($) {
+                function writeMessage(message) {
+                    $('#messageOutput').append(message + '\n')
+                }
+
+                $('#connect')
+                    .click(function doConnect() {
+                        var handlerURL = 'ws://localhost:8080/chapter11-1/chatHandler';
+                        websocket = new WebSocket(handlerURL);
+                        websocket.addEventListener('message', function (evt) {
+                            writeMessage('STAFF: ' + evt.data);
+                        });
+
+                        websocket.addEventListener('open', function(evt) {
+                            writeMessage("CONNECTED");
+                        });
+
+                        websocket.addEventListener('close', function (evt) {
+                            writeMessage(`DISCONNECTED. Reason: code=${evt.code}, reason=${evt.reason}`);
+                        });
+
+                        websocket.onerror = function (evt) {
+                            writeMessage('ERROR:' + evt.data);
+                        };
+                    });
+
+                $('#disconnect')
+                    .click(function () {
+                        if(typeof websocket != 'undefined') {
+                            websocket.close();
+                        } else {
+                            alert("Not connected.");
+                        }
+                    });
+
+                $('#send')
+                    .click(function () {
+                        if(typeof websocket != 'undefined') {
+                            websocket.send($('#message').val());
+                            writeMessage('USER:' + $('#message').val());
+                        } else {
+                            alert("Not connected.");
+                        }
+                    });
+            });
+            /*]]>*/
+        </script>
+        <div class="left_content" id="left_content" th:fragment="~{template/layout :: left_content}" >
+            <fieldset>
+                <legend th:text="#{chat.title}">CONTACT STAFF</legend>
+                <table>
+                    <tr>
+                        <td colspan="2"><button id="connect" th:text="#{button.connect}">Connect</button></td>
+                    </tr>
+                    <tr>
+                        <td><input id="message" value=""/></td>
+                        <td><button id="send" th:text="#{button.send}">SEND</button></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><textarea readonly id="messageOutput" rows="10" cols="50"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><button id="disconnect" th:text="#{button.disconnect}">Disconnect</button></td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+        <div class="right_content" id="right_content" th:replace="~{template/layout :: right_content}" ></div>
+        <div class="clear"></div>
+    </div> <!-- end of center_content -->
+
+    <div class="footer" id="footer" th:replace="~{template/layout :: footer}" ></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: discovery-service
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+# Configure the Server
+eureka:
+  instance:
+    hostname: 0.0.0.0
+  client:
+    registerWithEureka: false # do not auto-register as client
+    fetchRegistry: false
+    server:
+      waitTimeInMsWhenSyncEmpty: 0
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+server:
+  port: 3000   # where this discovery server is accessible
+  address: 0.0.0.0
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    org.springframework: DEBUG
+    com.apress.prospringmvc.bookstore: DEBUG

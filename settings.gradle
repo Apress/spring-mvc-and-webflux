@@ -4,7 +4,7 @@ include 'chapter1-mvc-bookstore'
 include 'chapter1-bookstore'
 include 'chapter2-bookstore'
 include 'chapter2-samples'
-/*include 'chapter5-bookstore'
+include 'chapter5-bookstore'
 include 'chapter6-bookstore'
 include 'chapter7-bookstore'
 include 'chapter8-bookstore'
@@ -26,7 +26,7 @@ include 'chapter13-technews-service'
 include 'chapter13-newreleases-service'
 include 'chapter13-account-service'
 include 'chapter13-presentation-service'
-include 'chapter13-book-service'*/
+include 'chapter13-book-service'
 
 rootProject.name = 'Spring MVC and WebFlux'
 rootProject.children.each {project ->

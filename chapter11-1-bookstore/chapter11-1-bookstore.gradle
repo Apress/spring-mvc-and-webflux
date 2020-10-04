@@ -1,0 +1,11 @@
+apply plugin: 'war'
+
+dependencies {
+	implementation project (':bookstore-shared')
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	implementation 'com.h2database:h2'
+	implementation 'commons-fileupload:commons-fileupload:1.4'
+}

@@ -1,0 +1,14 @@
+spring:
+  rsocket:
+    server:
+      transport: websocket
+      port: 8081
+      mapping-path: /rsocket  # without this NettyWebServer starts on 8080, might be a bug !?
+  main:
+    lazy-initialization: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework: DEBUG
+    com.apress.prospringmvc: DEBUG

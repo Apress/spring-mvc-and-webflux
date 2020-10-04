@@ -1,0 +1,34 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+	id 'war'
+}
+
+description 'Application showing how a plain Spring WAR with only java configuration would be configured and build.'
+
+dependencyManagement {
+	imports {
+		mavenBom SpringBootPlugin.BOM_COORDINATES
+	}
+}
+
+dependencies {
+		implementation project (':bookstore-mvc-shared')
+		implementation 'org.springframework:spring-webmvc'
+		implementation 'org.springframework.security:spring-security-web'
+		implementation 'org.springframework.security:spring-security-taglibs'
+		implementation 'org.springframework.security:spring-security-config'
+		implementation 'ch.qos.logback:logback-classic'
+
+	  implementation 'javax.servlet:javax.servlet-api'
+		implementation 'javax.servlet:jstl'
+
+  	implementation 'com.h2database:h2'
+  	implementation 'commons-fileupload:commons-fileupload:1.4'
+  	implementation 'org.apache.tiles:tiles-jsp:3.0.8'
+  	implementation 'org.apache.tiles:tiles-el:3.0.8'
+
+  	implementation 'io.springfox:springfox-swagger2:2.9.2'
+  	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+  	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
+}

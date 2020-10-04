@@ -1,0 +1,180 @@
+<!--
+Created by IntelliJ IDEA.
+User: iuliana cosmina
+Date: 2020-05-26
+Time: 11:47
+-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{template/layout :: head('Search books')}"></head>
+
+<body>
+<div id="wrap">
+    <div id="header" th:replace="~{template/layout :: header}" ></div>
+    <div class="center_content">
+        <div class="left_content" id="left_content" th:fragment="~{template/layout :: left_content}" >
+            <h1 id="pagetitle" th:text="#{book.search.title}">SEARCH TITLE</h1>
+            <form action="#" th:action="@{/book/list}" th:object="${bookSearchCriteria}" method="GET" id="bookSearchForm">
+                <fieldset>
+                    <legend th:text="#{book.searchcriteria}">SEARCH CRITERIA</legend>
+                    <table>
+                        <tr>
+                            <td><label for="title" th:text="#{book.title}">TITLE</label></td>
+                            <td><input type="text" th:field="*{title}"/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="category" th:text="#{book.category}">CATEGORY</label></td>
+                            <td>
+                                <select th:field="*{category}">
+                                    <option th:each="c : ${categories}" th:value="${c}" th:text="${c}" th:selected="${c eq 'Spring'}">
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+                <button id="search" th:text="#{button.search}">SEARCH</button>
+            </form>
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+                $( window ).on( "load", function() {
+                    $('#bookSearchResults').hide();
+                    renderReleases.start();
+                    renderNews.start();
+                });
+                $( window ).on( "onbeforeunload", function() {
+                    renderReleases.stop();
+                    renderNews.start();
+                });
+
+                function renderSearchResults(books) {
+                    var content = '';
+                    var baseDetailUrl = /*[[@{/book/detail/}]]*/ '/book/detail';
+                    var baseAddCartUrl = /*[[@{/cart/add/}]]*/ '/cart/add';
+                    var addToCart = /*[[#{book.addtocart}]]*/ 'Add To Cart';
+                    for (var i = 0; i<books.length; i++) {
+                        content += '<tr>';
+                        content += '<td><a href="'+ baseDetailUrl + books[i].id+'">'+books[i].title+'</a></td>';
+                        content += '<td>'+books[i].description+'</td>';
+                        content += '<td>'+books[i].price+'</td>';
+                        content += '<td><a href="'+ baseAddCartUrl +books[i].id+'">' + addToCart + '</a></td></tr>';
+                    }
+                    $('#bookSearchResults tbody').html(content);
+                    if(content !== '') {
+                        $('#bookSearchResults').show();
+                    } else {
+                        $('#bookSearchResults').hide();
+                    }
+                }
+
+                $('#bookSearchForm').submit(function(evt){
+                    evt.preventDefault();
+                    var title = $('#title').val();
+                    var category = $('#category').val();
+                    var json = { "title" : title, "category" : category};
+
+                    $.ajax({
+                        url: $('#bookSearchForm').action,
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify(json),
+                        success: function(responseData) { renderSearchResults(responseData);}
+                    });
+                });
+
+                var renderReleases = {
+                    source: new EventSource([[@{|/book/releases|}]]) ,
+                    start: function () {
+                        this.source.addEventListener("newBooks_message", function (event) {
+                            //console.log(event);
+                            $("#newBooks").html(event.data);
+                        });
+                        this.source.onerror = function () {
+                            this.close();
+                        };
+                    },
+                    stop: function() {
+                        this.source.close();
+                    }
+                };
+                var renderNews = {
+                    source: new EventSource([[@{|/tech/news|}]]) ,
+                    start: function () {
+                        this.source.addEventListener("techNews_message", function (event) {
+                            //console.log(event);
+                            $("#techNews").html(event.data);
+                        });
+                        this.source.onerror = function () {
+                            this.close();
+                        };
+                    },
+                    stop: function() {
+                        this.source.close();
+                    }
+                };
+                /*]]>*/
+            </script>
+            <table id="bookSearchResults">
+                <thead>
+                <tr>
+                    <th th:text="#{book.title}">TITLE</th>
+                    <th th:text="#{book.description}">DESCRIPTION</th>
+                    <th th:text="#{book.price}">PRICE</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="book : ${bookList}">
+                    <tr>
+                        <td><a th:href="@{/book/detail/} + ${book.id}" th:text="${book.title}">TITLE</a></td>
+                        <td th:text="${book.description}">DESC</td>
+                        <td th:text="${book.price}">PRICE</td>
+                        <td><a th:href="@{/cart/add/} + ${book.id}" th:text="#{book.addtocart}">CART</a></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <table class="ext_box">
+                <tr><td>
+                    <div class="int_box">
+                        <div class="title">
+                            <span class="title_icon"><img th:src="@{/static/images/release.ico}" alt="" title="" /></span>
+                            <th:block th:text="#{main.title.newbooks}">New Books</th:block>
+                        </div>
+                        <div id="newBooks">
+                            <table th:each="book : ${newBooks}" class="releases_table">
+                                <tr>
+                                    <td th:text="${book.year} + ', ' + ${book.title} + ', by ' +  ${book.author}"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </td></tr>
+                <tr><td>
+                <div class="int_box">
+                    <div class="title">
+                        <span class="title_icon"><img th:src="@{/static/images/news.ico}" alt="" title="" /></span>
+                        <th:block th:text="#{main.title.news}">Tech News</th:block>
+                    </div>
+                    <div id="techNews">
+                        <table th:each="article : ${techNews}" class="releases_table">
+                            <tr>
+                                <td th:text="${article}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                </td></tr>
+            </table>
+        </div>
+
+        <div class="right_content" id="right_content" th:replace="~{template/layout :: right_content}" ></div>
+        <div class="clear"></div>
+    </div> <!-- end of center_content -->
+
+    <div class="footer" id="footer" th:replace="~{template/layout :: footer}" ></div>
+</div>
+</body>
+</html>

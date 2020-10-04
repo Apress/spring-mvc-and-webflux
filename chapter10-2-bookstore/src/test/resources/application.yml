@@ -1,0 +1,12 @@
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    org.springframework: INFO
+    com.apress.prospringmvc.bookstore: DEBUG
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/book

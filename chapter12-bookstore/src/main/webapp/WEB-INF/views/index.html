@@ -1,0 +1,24 @@
+<!--
+Created by IntelliJ IDEA.
+User: iuliana cosmina
+Date: 2020-05-24
+Time: 11:47
+-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{template/layout :: head('Welcome')}"></head>
+
+<body>
+<div id="wrap">
+    <div id="header" th:replace="~{template/layout :: header}" ></div>
+    <div class="center_content">
+        <div class="left_content" id="left_content" th:replace="~{template/layout :: left_content}" ></div>
+        <div class="right_content" id="right_content" th:replace="~{template/layout :: right_content}" ></div>
+        <div class="clear"></div>
+    </div> <!-- end of center_content -->
+
+    <div class="footer" id="footer" th:replace="~{template/layout :: footer}" ></div>
+</div>
+</body>
+</html>

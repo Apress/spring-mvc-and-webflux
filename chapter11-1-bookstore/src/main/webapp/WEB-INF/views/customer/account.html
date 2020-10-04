@@ -1,0 +1,141 @@
+<!--
+Created by IntelliJ IDEA.
+User: iuliana cosmina
+Date: 2020-05-26
+Time: 11:47
+-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{template/layout :: head('Account')}"></head>
+
+<body>
+<div id="wrap">
+    <div id="header" th:replace="~{template/layout :: header}" ></div>
+    <div class="center_content">
+        <div class="left_content" id="left_content" th:fragment="~{template/layout :: left_content}" >
+            <h1 id="pagetitle" th:text="#{book.account.title}">Account TITLE</h1>
+            <form action="#" th:action="@{/customer/register}" th:object="${account}" method="POST" id="accountForm">
+                <input type="hidden" name="_method" value="PUT" />
+
+                <fieldset>
+                    <legend th:text="#{account.personal}">ACCOUNT PERSONAL</legend>
+                    <table>
+                        <tr>
+                            <td><label for="firstName" th:text="#{account.firstname}">TITLE</label></td>
+                            <td><input type="text" th:field="*{firstName}"/>
+                                <span th:if="${#fields.hasErrors('firstName')}" class="error" th:errors="*{firstName}">MISSING FN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="lastName" th:text="#{account.lastname}">TITLE</label></td>
+                            <td><input type="text" th:field="*{lastName}"/>
+                                <span th:if="${#fields.hasErrors('lastName')}" class="error" th:errors="*{lastName}">MISSING FN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="title" th:text="#{account.dob}">TITLE</label></td>
+                            <td><input type="date" th:field="*{dateOfBirth}"/>
+                                <span th:if="${#fields.hasErrors('dateOfBirth')}" class="error" th:errors="*{dateOfBirth}">MISSING FN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="address.street" th:text="#{address.street}">TITLE</label></td>
+                            <td><input type="text" th:field="*{address.street}"/>
+                                <span th:if="${#fields.hasErrors('address.street')}" class="error" th:errors="*{address.street}">MISSING FN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="address.houseNumber" th:text="#{address.houseNumber}">TITLE</label></td>
+                            <td><input type="text" th:field="*{address.houseNumber}"/>
+                                <span th:if="${#fields.hasErrors('address.houseNumber')}" class="error" th:errors="*{address.houseNumber}">MISSING FN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="address.boxNumber" th:text="#{address.boxNumber}">TITLE</label></td>
+                            <td><input type="text" th:field="*{address.boxNumber}"/>
+                                <span th:if="${#fields.hasErrors('address.boxNumber')}" class="error" th:errors="*{address.boxNumber}">MISSING FN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="address.city" th:text="#{address.city}">TITLE</label></td>
+                            <td><input type="text" th:field="*{address.city}"/>
+                                <span th:if="${#fields.hasErrors('address.city')}" class="error" th:errors="*{address.city}">MISSING FN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="address.postalCode" th:text="#{address.postalCode}">TITLE</label></td>
+                            <td><input type="text" th:field="*{address.postalCode}"/>
+                                <span th:if="${#fields.hasErrors('address.postalCode')}" class="error" th:errors="*{address.postalCode}">MISSING FN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="address.country" th:text="#{address.country}">TITLE</label></td>
+                            <td>
+                                <select th:field="*{address.country}">
+                                    <option th:each="c : ${countries}" th:value="${c.key}" th:text="${c.value}"></option>
+                                </select>
+                                <span th:if="${#fields.hasErrors('address.country')}" class="error" th:errors="*{address.country}">MISSING FN</span>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+                <fieldset>
+                    <legend th:text="#{account.userinfo}">USER INFO</legend>
+                    <table>
+                        <tr>
+                            <td><label for="username" th:text="#{account.username}">TITLE</label></td>
+                            <td><input type="text" th:field="*{username}"/>
+                                <span th:if="${#fields.hasErrors('username')}" class="error" th:errors="*{username}">MISSING FN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="emailAddress" th:text="#{account.email}">TITLE</label></td>
+                            <td><input type="text" th:field="*{emailAddress}"/>
+                                <span th:if="${#fields.hasErrors('emailAddress')}" class="error" th:errors="*{emailAddress}">MISSING FN</span>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+                <button id="search" th:text="#{button.save}">SEARCH</button>
+            </form>
+
+            <form id="orderForm" th:action="@{/order/upload}" method="POST" enctype="multipart/form-data">
+                <fieldset>
+                    <legend th:text="#{account.upload.orders}">UPLOAD ORDER</legend>
+                    <input type="file" placeholder="Select File" id="order" name="order"/>
+                    <button id="upload" type="submit" th:text="#{button.upload}">UPLOAD</button>
+                </fieldset>
+            </form>
+            <fieldset>
+                <legend th:text="#{account.orders}">ACCOUNT  ORDERS</legend>
+                <p th:if="${message ne null}" th:text="${message}">/p>
+                    <ul th:if="${not #lists.isEmpty(fileOrders)}">
+                        <th:block th:each="fo : ${fileOrders}">
+                            <li><a th:href="@{fo.location}" th:text ="${fo.name}"></a></li>
+                        </th:block>
+                    </ul>
+            </fieldset>
+
+            <script>
+                $('#accountForm').submit(function(evt){
+                    evt.preventDefault();
+                    formData = $('#accountForm').serialize();
+                    $.ajax({
+                        url: $('#accountForm').action,
+                        type: 'PUT',
+                        data: formData
+                    });
+                });
+            </script>
+
+        </div>
+
+        <div class="right_content" id="right_content" th:replace="~{template/layout :: right_content}" ></div>
+        <div class="clear"></div>
+    </div> <!-- end of center_content -->
+
+    <div class="footer" id="footer" th:replace="~{template/layout :: footer}" ></div>
+</div>
+</body>
+</html>

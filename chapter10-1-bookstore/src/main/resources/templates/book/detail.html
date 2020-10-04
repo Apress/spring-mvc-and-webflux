@@ -1,0 +1,38 @@
+<!--
+Created by IntelliJ IDEA.
+User: iuliana cosmina
+Date: 2020-05-26
+Time: 11:47
+-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{template/layout :: head('Book Detail')}"></head>
+
+<body>
+<div id="wrap">
+    <div id="header" th:replace="~{template/layout :: header}" ></div>
+    <div class="center_content">
+        <div class="left_content" id="left_content" th:fragment="~{template/layout :: left_content}" >
+            <h1 id="pagetitle" th:text="#{book.detail.title}">Detail TITLE</h1>
+            <div th:each="book : ${books}">
+                <img th:src="@{'/static/images/books/' + ${book.isbn} + '/book_front_cover.png'}"  align="left" alt="${book.title}" width="250"/>
+                <table>
+                    <tr><td th:text="#{book.title}">TITLE</td><td th:text="${book.title}">T</td></tr>
+                    <tr><td th:text="#{book.description}">DESC</td><td th:text="${book.description}">D</td></tr>
+                    <tr><td th:text="#{book.author}">BY</td><td th:text="${book.author}">B</td></tr>
+                    <tr><td th:text="#{book.year}">1983</td><td th:text="${book.year}">YEAR</td></tr>
+                    <tr><td th:text="#{book.isbn}">ISBN</td><td th:text="${book.isbn}">ISBN</td></tr>
+                    <tr><td th:text="#{book.price}">Price</td><td th:text="${book.price}">PRICE</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="right_content" id="right_content" th:replace="~{template/layout :: right_content}" ></div>
+        <div class="clear"></div>
+    </div> <!-- end of center_content -->
+
+    <div class="footer" id="footer" th:replace="~{template/layout :: footer}" ></div>
+</div>
+</body>
+</html>

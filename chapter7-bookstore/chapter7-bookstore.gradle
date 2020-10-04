@@ -1,0 +1,17 @@
+apply plugin: 'war'
+
+dependencies {
+	implementation project (':bookstore-shared')
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	// Dependencies needed to get JSP working in an Embedded container
+	implementation 'javax.servlet:jstl'
+	providedRuntime 'org.apache.tomcat.embed:tomcat-embed-jasper'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	implementation 'com.h2database:h2'
+	implementation 'commons-fileupload:commons-fileupload:1.4'
+	implementation 'org.apache.tiles:tiles-jsp:3.0.8'
+	implementation 'org.apache.tiles:tiles-el:3.0.8'
+}

@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: presentation-service # Service registers under this name
+  freemarker:
+    enabled: false     # Ignore Eureka dashboard FreeMarker templates
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+error:
+  path=/error
+
+# HTTP Server
+server:
+  port: 7000   # HTTP (Netty) port
+  address: 0.0.0.0
+  context-path: /
+  compression:
+    enabled: true
+
+# Discovery Server Access
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:3000/eureka/
+
+
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    preferIpAddress: false
+
+info:
+  app:
+    name: presentation-service
+    description: Spring Cloud Bookstore Service accessing data from all other services
+    version: 2.0.0-SNAPSHOT
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    org.springframework: DEBUG
+    com.apress.prospringmvc.presentation: DEBUG

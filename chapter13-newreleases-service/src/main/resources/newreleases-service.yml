@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: newreleases-service # Service registers under this name
+
+# HTTP Server
+server:
+  port: 5000   # HTTP (Netty) port
+  address: 0.0.0.0
+
+# Discovery Server Access
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://localhost:3000/eureka/
+      healthcheck:
+        enabled: true
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    preferIpAddress: false
+
+info:
+  app:
+    name: newreleases-service
+    description: Spring Cloud Random New Book Releases Generator
+    version: 2.0.0-SNAPSHOT
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    org.springframework: DEBUG
+    com.apress.prospringmvc.newreleases: DEBUG

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Playground</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<div class="scrollable">
+    <ul id="news">
+    </ul>
+</div>
+</body>
+<script>
+    var renderNews = {
+        socket : new WebSocket('ws://localhost:3000/techNews'),
+        fromServer: [],
+        start: function () {
+            this.socket.onopen = function(e) {
+                console.log('Opening connection...');
+                renderNews.socket.send('Give me your best shot');
+            };
+
+            this.socket.onmessage = function(event) {
+                console.log(`Received: ${event.data}`);
+                $("#news").append('<li>'+ event.data +'</li>')
+                renderNews.fromServer.push(event.data);
+                if(renderNews.fromServer.length % 10 === 0) {
+                    renderNews.socket.send('Slow down mate!');
+                }  if(renderNews.fromServer.length % 20 === 0) {
+                    renderNews.socket.send('Faster mate!');
+                }
+            };
+
+            this.socket.onclose = function(event) {
+                if (event.wasClean) {
+                    console.log(`Clean closing... code=${event.code} reason=${event.reason}`);
+                } else {
+                    // event.code is usually 1006 in this case
+                    console.log('Server closed the connection.');
+                }
+            };
+
+            this.socket.onerror = function(error) {
+                console.log(`Well bummer... ${error.message}`);
+            };
+        },
+        stop: function (){
+            this.socket.close();
+        }
+    };
+
+    $( window ).on( "load", function() {
+        renderNews.start();
+    });
+
+    $( window ).on( "onbeforeunload", function() {
+        renderNews.stop();
+    });
+</script>
+</html>
